@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -108,33 +109,37 @@ public class LoginTask extends JFrame{
         panel.add(passwordField, gbc);
 
         JButton loginButton = new JButton("Iniciar sesión");
-        loginButton.setFont(loginButton.getFont().deriveFont(Font.BOLD));
-        loginButton.setBackground(Color.white);
-        loginButton.setForeground(Color.darkGray);
+    loginButton.setFont(loginButton.getFont().deriveFont(Font.BOLD));
+    loginButton.setBackground(Color.white);
+    loginButton.setForeground(Color.darkGray);
+    loginButton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.white, 2, true),
+            BorderFactory.createEmptyBorder(10, 25, 10, 25)));
 
-        // Crear el borde redondeado para el botón de inicio de sesión
-        loginButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.white, 2, true),
-                BorderFactory.createEmptyBorder(10, 25, 10, 25)));
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    gbc.gridwidth = 2;
+    panel.add(loginButton, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
+    loginButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
 
-        // Agregar el componente al panel con las restricciones de GridBagConstraints
-        panel.add(loginButton, gbc);
-        
-         // Agregar ActionListener al botón de inicio de sesión
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Redireccionar a la ventana "Tasks"
+            if (username.equals("admin") && password.equals("123")) {
+                // Acceso concedido - Redireccionar a la ventana "Tasks"
                 Tasks tasks = new Tasks();
                 tasks.setVisible(true);
 
                 // Cerrar la ventana actual (LoginTask)
                 dispose();
-                 }
-        });
+            } else {
+                // Acceso denegado - Mostrar mensaje de error
+                JOptionPane.showMessageDialog(LoginTask.this, "Nombre de usuario o contraseña incorrectos", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    });
+    
     }
 }
